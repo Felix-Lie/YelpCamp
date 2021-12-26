@@ -1,9 +1,9 @@
-#YelpCamp Project
+# YelpCamp Project
 
 The Projects is not complete yet.
 By completion, the project will become a website to look for campgrounds
 
-####to run the project:
+#### to run the project:
 
 1. Clone the repository to VS Code in your desktop
 2. Open Terminal and change the directory to YelpCamp folder
@@ -17,4 +17,4 @@ By completion, the project will become a website to look for campgrounds
    - If you use Nodemon:
      - Nodemon app.js
    - Without Nodemon:
-     -node app.js
+     - node app.js
