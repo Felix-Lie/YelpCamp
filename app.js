@@ -2,6 +2,10 @@ const express = require('express')
 const path = require('path')
 const mongoose = require('mongoose')
 const ejsMate = require('ejs-mate')
+const Joi = require('joi') //lets you describe your data using a simple, intuitive, and readable language.
+const { campgroundSchema } = require('./schemas.js')
+const catchAsync = require('./utilities/catchAsync')
+const ExpressError = require('./utilities/ExpressError')
 const methodOverride = require('method-override')
 const Campground = require('./models/campground')
 
@@ -33,16 +37,30 @@ app.set('views', path.join(__dirname, 'views')) //to help with directories
 app.use(express.urlencoded({ extended: true })) //to parse new inputs
 app.use(methodOverride('_method')) //to allow edits/delete on existing campground
 
+const validateCampground = (req, res, next) => {
+  const { error } = campgroundSchema.validate(req.body) //validating schema with joi
+  if (error) {
+    const msg = error.details.map((el) => el.message).join(',')
+    // throw new ExpressError('Invalid Campground Data', 400)
+    throw new ExpressError(msg, 400)
+  } else {
+    next()
+  }
+}
+
 //default home page
 app.get('/', (req, res) => {
   res.render('home')
 })
 
 //render all campground names
-app.get('/campgrounds', async (req, res) => {
-  const campgrounds = await Campground.find({})
-  res.render('campgrounds/index', { campgrounds })
-})
+app.get(
+  '/campgrounds',
+  catchAsync(async (req, res) => {
+    const campgrounds = await Campground.find({})
+    res.render('campgrounds/index', { campgrounds })
+  })
+)
 
 //create new campground
 //order matters, this should go first before campground/id
@@ -51,38 +69,68 @@ app.get('/campgrounds/new', (req, res) => {
 })
 
 //submit new input of campgrounds
-app.post('/campgrounds', async (req, res) => {
-  const campground = new Campground(req.body.campground)
-  await campground.save()
-  res.redirect(`/campgrounds/${campground._id}`)
-})
+app.post(
+  '/campgrounds',
+  validateCampground,
+  catchAsync(async (req, res, next) => {
+    const campground = new Campground(req.body.campground)
+    await campground.save()
+    res.redirect(`/campgrounds/${campground._id}`)
+  })
+)
 
 // render to a specific camp
-app.get('/campgrounds/:id', async (req, res) => {
-  const campground = await Campground.findById(req.params.id)
-  res.render('campgrounds/show', { campground })
-})
+app.get(
+  '/campgrounds/:id',
+  catchAsync(async (req, res) => {
+    const campground = await Campground.findById(req.params.id)
+    res.render('campgrounds/show', { campground })
+  })
+)
 
 //renders to edit page
-app.get('/campgrounds/:id/edit', async (req, res) => {
-  const campground = await Campground.findById(req.params.id)
-  res.render('campgrounds/edit', { campground })
-})
+app.get(
+  '/campgrounds/:id/edit',
+  catchAsync(async (req, res) => {
+    const campground = await Campground.findById(req.params.id)
+    res.render('campgrounds/edit', { campground })
+  })
+)
 
 //update existing camp with the info from edited page
-app.put('/campgrounds/:id', async (req, res) => {
-  const { id } = req.params
-  const campground = await Campground.findByIdAndUpdate(id, {
-    ...req.body.campground,
+app.put(
+  '/campgrounds/:id',
+  validateCampground,
+  catchAsync(async (req, res) => {
+    const { id } = req.params
+    const campground = await Campground.findByIdAndUpdate(id, {
+      ...req.body.campground,
+    })
+    res.redirect(`/campgrounds/${campground._id}`)
   })
-  res.redirect(`/campgrounds/${campground._id}`)
-})
+)
 
 //delete existing campgrounds
-app.delete('/campgrounds/:id', async (req, res) => {
-  const { id } = req.params
-  await Campground.findByIdAndDelete(id)
-  res.redirect('/campgrounds')
+app.delete(
+  '/campgrounds/:id',
+  catchAsync(async (req, res) => {
+    const { id } = req.params
+    await Campground.findByIdAndDelete(id)
+    res.redirect('/campgrounds')
+  })
+)
+
+//error path for unavaialble directories
+//order matters, so if the routes is not mentioned above, then error
+app.all('*', (req, res, next) => {
+  next(new ExpressError('Page Not Found', 404))
+})
+
+//error handler
+app.use((err, req, res, next) => {
+  const { statusCode = 500 } = err
+  if (!err.message) err.message = 'Oh No, Something Went Wrong!'
+  res.status(statusCode).render('error', { err })
 })
 
 app.listen(3000, () => {
