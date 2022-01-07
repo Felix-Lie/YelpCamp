@@ -1,8 +1,8 @@
 //schema types
-const mongoose = require('mongoose')
-const Review = require('./review')
+const mongoose = require('mongoose');
+const Review = require('./review');
 
-const Schema = mongoose.Schema
+const Schema = mongoose.Schema;
 
 const CampgroundSchema = new Schema({
   title: String,
@@ -10,13 +10,17 @@ const CampgroundSchema = new Schema({
   price: Number,
   description: String,
   location: String,
+  author: {
+    type: Schema.Types.ObjectId,
+    ref: 'User',
+  },
   reviews: [
     {
       type: Schema.Types.ObjectId,
       ref: 'Review', //connect to review model
     },
   ],
-})
+});
 
 CampgroundSchema.post('findOneAndDelete', async function (doc) {
   if (doc) {
@@ -24,8 +28,8 @@ CampgroundSchema.post('findOneAndDelete', async function (doc) {
       _id: {
         $in: doc.reviews, //if doc exist, remove review where the id is in doc.reviews
       },
-    })
+    });
   }
-})
+});
 
-module.exports = mongoose.model('Campground', CampgroundSchema)
+module.exports = mongoose.model('Campground', CampgroundSchema);
