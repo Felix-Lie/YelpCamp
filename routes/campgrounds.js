@@ -4,23 +4,30 @@ const campgrounds = require('../controllers/campgrounds');
 const catchAsync = require('../utilities/catchAsync');
 const { isLoggedIn, validateCampground, isAuthor } = require('../middleware');
 
-//render all campground names
-router.get('/', catchAsync(campgrounds.index));
+//Using Router Route
+router
+  .route('/')
+  .get(catchAsync(campgrounds.index)) //render all campground names
+  .post(
+    isLoggedIn,
+    validateCampground,
+    catchAsync(campgrounds.createCampground)
+  ); //submit new input of campgrounds
 
 //create new campground
 //order matters, this should go first before campground/id
 router.get('/new', isLoggedIn, campgrounds.renderNewForm);
 
-//submit new input of campgrounds
-router.post(
-  '/',
-  isLoggedIn,
-  validateCampground,
-  catchAsync(campgrounds.createCampground)
-);
-
-// render to a specific camp
-router.get('/:id', catchAsync(campgrounds.showCampground));
+router
+  .route('/:id')
+  .get(catchAsync(campgrounds.showCampground)) // render to a specific camp
+  .put(
+    isLoggedIn,
+    isAuthor,
+    validateCampground,
+    catchAsync(campgrounds.updateCampground) //update existing camp with the info from edited page
+  )
+  .delete(isLoggedIn, isAuthor, catchAsync(campgrounds.deleteCampground)); //delete existing campgrounds
 
 //renders to edit page
 router.get(
@@ -28,23 +35,6 @@ router.get(
   isLoggedIn,
   isAuthor,
   catchAsync(campgrounds.renderEditForm)
-);
-
-//update existing camp with the info from edited page
-router.put(
-  '/:id',
-  isLoggedIn,
-  isAuthor,
-  validateCampground,
-  catchAsync(campgrounds.updateCampground)
-);
-
-//delete existing campgrounds
-router.delete(
-  '/:id',
-  isLoggedIn,
-  isAuthor,
-  catchAsync(campgrounds.deleteCampground)
 );
 
 module.exports = router;
