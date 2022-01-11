@@ -3,6 +3,9 @@ const router = express.Router();
 const campgrounds = require('../controllers/campgrounds');
 const catchAsync = require('../utilities/catchAsync');
 const { isLoggedIn, validateCampground, isAuthor } = require('../middleware');
+const multer = require('multer');
+const { storage } = require('../cloudinary');
+const upload = multer({ storage });
 
 //Using Router Route
 router
@@ -10,9 +13,11 @@ router
   .get(catchAsync(campgrounds.index)) //render all campground names
   .post(
     isLoggedIn,
+    upload.array('image'),
     validateCampground,
     catchAsync(campgrounds.createCampground)
-  ); //submit new input of campgrounds
+  );
+//submit new input of campgrounds
 
 //create new campground
 //order matters, this should go first before campground/id
