@@ -2,6 +2,7 @@
 //TO KEEP THE CAMPGROUND ROUTES PAGE CLEANER
 
 const Campground = require('../models/campground');
+const { campgroundSchema } = require('../schemas');
 
 //Controller to render all campground names
 module.exports.index = async (req, res) => {
@@ -59,11 +60,17 @@ module.exports.renderEditForm = async (req, res) => {
 //Controller to update existing camp with the info from edited page
 module.exports.updateCampground = async (req, res) => {
   const { id } = req.params;
-  const camp = await Campground.findByIdAndUpdate(id, {
+  const campground = await Campground.findByIdAndUpdate(id, {
     ...req.body.campground,
   });
+  const imgs = req.files.map((f) => ({
+    url: f.path,
+    filename: f.filename,
+  }));
+  campground.images.push(...imgs);
+  await campground.save();
   req.flash('success', 'Successfully updated campground');
-  res.redirect(`/campgrounds/${camp._id}`);
+  res.redirect(`/campgrounds/${campground._id}`);
 };
 
 //Controller to delete existing campgrounds
