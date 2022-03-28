@@ -60,6 +60,7 @@ module.exports.renderEditForm = async (req, res) => {
 //Controller to update existing camp with the info from edited page
 module.exports.updateCampground = async (req, res) => {
   const { id } = req.params;
+  console.log(req.body);
   const campground = await Campground.findByIdAndUpdate(id, {
     ...req.body.campground,
   });
