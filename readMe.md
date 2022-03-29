@@ -13,6 +13,7 @@ You must have Google Chrome (recommended) NodeJs, Git, and MongoDB installed in 
    - npm init -y
    - npm i express mongoose ejs method-override ejs-mate joi express-session connect-flash
    - npm i passport passport-local passport-local-mongoose
+   - npm install @mapbox/mapbox-sdk
 4. (Optional) If you want to use Nodemon, run the following code in Terminal:
    - npm instal --global nodemon
 5. Run the app by typing in terminal by typing:
