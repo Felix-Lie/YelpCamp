@@ -14,6 +14,8 @@ const passport = require('passport');
 const LocalStrategy = require('passport-local');
 const User = require('./models/user');
 
+const mongoSanitize = require('express-mongo-sanitize');
+
 const userRoutes = require('./routes/users');
 const campgroundRoutes = require('./routes/campgrounds');
 const reviewRoutes = require('./routes/reviews');
@@ -46,6 +48,11 @@ app.set('views', path.join(__dirname, 'views')); //to help with directories
 app.use(express.urlencoded({ extended: true })); //to parse new inputs
 app.use(methodOverride('_method')); //to allow edits/delete on existing campground
 app.use(express.static(path.join(__dirname, 'public'))); //to serve static files
+app.use(
+  mongoSanitize({
+    replaceWith: '_',
+  })
+); //sanitizes user-supplied data to prevent MongoDB Operator Injection.
 
 //session
 const sessionConfig = {
