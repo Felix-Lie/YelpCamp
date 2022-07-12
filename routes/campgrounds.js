@@ -43,4 +43,14 @@ router.get(
   catchAsync(campgrounds.renderEditForm)
 );
 
+router.get('/logout', async (req, res, next) => {
+  req.logout((err) => {
+    if (err) {
+      return next(err);
+    }
+    req.flash('success', 'Goodbye!');
+    res.redirect('/campgrounds');
+  });
+});
+
 module.exports = router;
