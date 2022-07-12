@@ -40,8 +40,18 @@ module.exports.login = (req, res) => {
 };
 
 //Controller that redirect to logout page and logout user
-module.exports.logout = (req, res) => {
-  req.logout();
+// module.exports.logout = (req, res) => {
+//   req.logout();
+//   req.flash('success', 'Goodbye!');
+//   res.redirect('/campgrounds');
+// };
+
+module.exports.logout = (req, res, next) => {
+  req.logout(function (err) {
+    if (err) {
+      return next(err);
+    }
+  });
   req.flash('success', 'Goodbye!');
   res.redirect('/campgrounds');
 };
