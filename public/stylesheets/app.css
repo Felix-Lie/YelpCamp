@@ -1,8 +1,10 @@
+/* Campgrounds Page Map CSS */
 #cluster-map {
   width: 100%;
   height: 500px;
 }
 
+/* Individual Camp Page Map CSS */
 #map {
   width: 100%;
   height: 300px;
