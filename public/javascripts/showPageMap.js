@@ -1,4 +1,4 @@
-// const campground = require('../../models/campground');
+// javascript file for showing map in individual camground
 
 mapboxgl.accessToken = mapToken;
 const map = new mapboxgl.Map({
