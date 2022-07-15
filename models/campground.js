@@ -1,4 +1,4 @@
-//schema types
+//Campgorund Schema
 const mongoose = require('mongoose');
 const Review = require('./review');
 

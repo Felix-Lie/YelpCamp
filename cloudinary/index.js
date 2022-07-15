@@ -1,3 +1,4 @@
+//JS file to set CLoudinary for Image storage
 const cloudinary = require('cloudinary').v2;
 const { CloudinaryStorage } = require('multer-storage-cloudinary');
 
