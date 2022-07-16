@@ -5,7 +5,10 @@ const catchAsync = require('../utilities/catchAsync');
 const users = require('../controllers/users');
 
 //Router route to render registration page & post registration submission
-router.route('/register').get(users.renderRegister).post(users.register);
+router
+  .route('/register')
+  .get(users.renderRegister)
+  .post(catchAsync(users.register));
 
 //Router route to render login page & authenticate login
 router
