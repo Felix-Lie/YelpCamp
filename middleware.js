@@ -3,6 +3,7 @@ const ExpressError = require('./utilities/ExpressError');
 const Campground = require('./models/campground');
 const Review = require('./models/review');
 
+//Login Middleware
 module.exports.isLoggedIn = (req, res, next) => {
   if (!req.isAuthenticated()) {
     req.session.returnTo = req.originalUrl; //directs to the last URL previously before user sign in
@@ -12,6 +13,7 @@ module.exports.isLoggedIn = (req, res, next) => {
   next();
 };
 
+// Validate Campground Middleware
 module.exports.validateCampground = (req, res, next) => {
   const { error } = campgroundSchema.validate(req.body); //validating schema with joi
   if (error) {
@@ -23,6 +25,7 @@ module.exports.validateCampground = (req, res, next) => {
   }
 };
 
+//Author Middleware for edit and delete camp
 module.exports.isAuthor = async (req, res, next) => {
   const { id } = req.params;
   const campground = await Campground.findById(id);
@@ -33,6 +36,7 @@ module.exports.isAuthor = async (req, res, next) => {
   next();
 };
 
+//Review Author Middleware to a delete review
 module.exports.isReviewAuthor = async (req, res, next) => {
   const { id, reviewId } = req.params;
   const review = await Review.findById(reviewId);
@@ -43,6 +47,7 @@ module.exports.isReviewAuthor = async (req, res, next) => {
   next();
 };
 
+//Validate Review Middleware
 module.exports.validateReview = (req, res, next) => {
   const { error } = reviewSchema.validate(req.body);
   if (error) {

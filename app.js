@@ -15,12 +15,15 @@ const LocalStrategy = require('passport-local');
 const User = require('./models/user');
 const helmet = require('helmet');
 
+//mongo sanitize for security
 const mongoSanitize = require('express-mongo-sanitize');
 
+//routes
 const userRoutes = require('./routes/users');
 const campgroundRoutes = require('./routes/campgrounds');
 const reviewRoutes = require('./routes/reviews');
 
+//connect to mongoose
 mongoose
   .connect('mongodb://localhost:27017/yelp-camp', {
     useNewUrlParser: true,
@@ -68,7 +71,11 @@ const sessionConfig = {
     maxAge: 1000 * 60 * 60 * 24 * 7,
   },
 };
+app.use(session(sessionConfig));
+app.use(flash());
+app.use(helmet());
 
+//helmet security policy
 const scriptSrcUrls = [
   'https://stackpath.bootstrapcdn.com/',
   'https://api.tiles.mapbox.com/',
@@ -96,8 +103,6 @@ const connectSrcUrls = [
 ];
 const fontSrcUrls = ['https://res.cloudinary.com/dv5vm4sqh/'];
 
-app.use(session(sessionConfig));
-app.use(flash());
 //Helmet helps secure Express apps by setting various HTTP headers.
 app.use(
   helmet.contentSecurityPolicy({
@@ -122,6 +127,7 @@ app.use(
   })
 );
 
+//Passport for authentication
 app.use(passport.initialize());
 app.use(passport.session());
 passport.use(new LocalStrategy(User.authenticate()));
@@ -136,12 +142,6 @@ app.use((req, res, next) => {
   res.locals.success = req.flash('success');
   res.locals.error = req.flash('error');
   next();
-});
-
-app.get('/fakeUser', async (req, res) => {
-  const user = new User({ email: 'colttttt@gmail.com', username: 'colttt1' });
-  const newUser = await User.register(user, 'chicken');
-  res.send(newUser);
 });
 
 //routes
