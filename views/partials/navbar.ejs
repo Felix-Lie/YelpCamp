@@ -1,5 +1,7 @@
+<!-- Partials for Navbar -->
 <nav class="navbar sticky-top navbar-expand-lg navbar-dark bg-dark">
   <div class="container-fluid">
+    <!-- YelpCamp Logo -->
     <a class="navbar-brand" href="#">YelpCamp</a>
     <button
       class="navbar-toggler"
@@ -12,12 +14,17 @@
     >
       <span class="navbar-toggler-icon"></span>
     </button>
+    <!-- End of YelpCamp Logo -->
     <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
+      <!-- Navbar Options -->
       <div class="navbar-nav">
         <a class="nav-link active" href="/">Home</a>
         <a class="nav-link" href="/campgrounds">Campgrounds</a>
         <a class="nav-link" href="/campgrounds/new">New Campground</a>
       </div>
+      <!-- End of Navbar Options -->
+
+      <!-- Login register and logout -->
       <div class="navbar-nav ms-auto">
         <% if(!currentUser) {%>
         <a class="nav-link" href="/login">Login</a>
@@ -26,6 +33,7 @@
         <a class="nav-link" href="/logout">Logout</a>
         <% } %>
       </div>
+      <!-- End of Login register and logout -->
     </div>
   </div>
 </nav>

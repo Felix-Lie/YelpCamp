@@ -1,10 +1,13 @@
 <!-- show individual camp title and camp location -->
 <% layout('layouts/boilerplate') %>
+<!-- Styling for the stars used in review -->
 <link rel="stylesheet" href="/stylesheets/stars.css" />
 
 <div class="row">
+  <!-- left column: Camp Image, title, description, price, edit and delete button-->
   <div class="col-6">
-    <div id="camogroundCarousel" class="carousel slide" data-bs-ride="carousel">
+    <!-- Image Carousel -->
+    <div id="campgroundCarousel" class="carousel slide" data-bs-ride="carousel">
       <div class="carousel-inner">
         <% campground.images.forEach((img, i) => { %>
         <div class="carousel-item <%= i === 0 ? 'active' : '' %>">
@@ -16,7 +19,7 @@
       <button
         class="carousel-control-prev"
         type="button"
-        data-bs-target="#camogroundCarousel"
+        data-bs-target="#campgroundCarousel"
         data-bs-slide="prev"
       >
         <span class="carousel-control-prev-icon" aria-hidden="true"></span>
@@ -25,7 +28,7 @@
       <button
         class="carousel-control-next"
         type="button"
-        data-bs-target="#camogroundCarousel"
+        data-bs-target="#campgroundCarousel"
         data-bs-slide="next"
       >
         <span class="carousel-control-next-icon" aria-hidden="true"></span>
@@ -33,12 +36,16 @@
       </button>
       <% } %>
     </div>
-
+    <!-- End of Image Carousel -->
+    <!-- Campground Details -->
     <div class="card mb-3">
+      <!-- Campground Title and Description -->
       <div class="card-body">
         <h5 class="card-title"><%= campground.title%></h5>
         <p class="card-text"><%= campground.description%></p>
       </div>
+      <!-- End of Campground Title and Description -->
+      <!-- Campground Location, Price and Submitter -->
       <ul class="list-group list-group-flush">
         <li class="list-group-item text-muted"><%= campground.location%></li>
         <li class="list-group-item">
@@ -46,6 +53,8 @@
         </li>
         <li class="list-group-item">$<%= campground.price%>/night</li>
       </ul>
+      <!-- End of Campground Location, Price and Submitter -->
+      <!-- Edit adn Delete Button -->
       <% if(currentUser && campground.author.equals(currentUser._id)) {%>
       <div class="card-body">
         <a
@@ -62,20 +71,28 @@
         </form>
       </div>
       <% } %>
-      <div class="card-footer text-muted">2 days ago</div>
+      <!-- End of Edit adn Delete Button -->
     </div>
+    <!-- End of Campground Details -->
   </div>
+  <!-- End of left column -->
+
+  <!-- Right Column: Review and Maps -->
   <div class="col-6">
+    <!-- Camp Location Map -->
     <div id="map"></div>
 
+    <!-- Review Section -->
     <% if(currentUser) { %>
     <h2>Leave a Review</h2>
+    <!-- Review Form -->
     <form
       action="/campgrounds/<%=campground._id%>/reviews"
       method="POST"
       class="mb-3 validated-form"
       novalidate
     >
+      <!-- Stars for review -->
       <div class="mb-3">
         <fieldset class="starability-basic">
           <input
@@ -124,6 +141,9 @@
           <label for="first-rate5" title="Amazing">5 stars</label>
         </fieldset>
       </div>
+      <!-- End Stars for review -->
+
+      <!-- Entry for review -->
       <div class="mb-3">
         <label class="form-label" for="body">Review Text:</label>
         <textarea
@@ -136,19 +156,29 @@
         ></textarea>
         <div class="valid-feedback">Looks good!</div>
       </div>
+      <!-- End Entry for review -->
+
+      <!-- Submit review button -->
       <button class="btn btn-success">Submit</button>
     </form>
+    <!-- End of Review Form -->
+
+    <!-- Renders list of reviews -->
     <% } %> <% for(let review of campground.reviews) {%>
     <div class="card mb-3">
       <div class="card-body">
+        <!-- Review Author  -->
         <h5 class="card-title"><%=review.author.username%></h5>
+
+        <!-- Review Rating -->
         <p class="starability-result" data-rating="<%=review.rating%>">
           Rated: <%=review.rating%> Stars
         </p>
-        <!-- <h6 class="card-subtitle mb-2 text-muted">
-          by <%= review.author.username%>
-        </h6> -->
+
+        <!-- Review Description -->
         <p class="card-text">Review: <%=review.body%></p>
+
+        <!-- Delete Review Button -->
         <% if(currentUser && review.author.equals(currentUser._id)) { %>
         <form
           action="/campgrounds/<%=campground._id%>/reviews/<%=review._id%>?_method=DELETE"
@@ -157,10 +187,14 @@
           <button class="btn btn-sm btn-danger">Delete</button>
         </form>
         <% } %>
+        <!-- End of Delete Review Button -->
       </div>
     </div>
     <% } %>
+    <!-- End of Renders list of reviews -->
+    <!-- End of Review Section -->
   </div>
+  <!-- End of Right Column -->
 </div>
 
 <script>

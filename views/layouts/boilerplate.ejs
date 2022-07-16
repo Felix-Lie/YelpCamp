@@ -5,6 +5,8 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>YelpCamp</title>
+
+    <!-- BootStrap -->
     <link
       href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css"
       rel="stylesheet"
@@ -12,6 +14,7 @@
       crossorigin="anonymous"
     />
 
+    <!-- Mapbox Link -->
     <script src="https://api.mapbox.com/mapbox-gl-js/v2.7.0/mapbox-gl.js"></script>
     <link
       href="https://api.mapbox.com/mapbox-gl-js/v2.7.0/mapbox-gl.css"
@@ -19,12 +22,14 @@
     />
     <link rel="stylesheet" href="/stylesheets/app.css" />
   </head>
+
   <body class="d-flex flex-column vh-100">
     <%- include('../partials/navbar')%>
     <main class="container mt-5">
       <%- include('../partials/flash')%> <%- body %>
     </main>
     <%- include('../partials/footer')%>
+    <!-- Bootstrap -->
     <script
       src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.10.2/dist/umd/popper.min.js"
       integrity="sha384-7+zCNj/IqJ95wo16oMtfsKbZ9ccEh31eOz1HGyDuCQ6wgnyJNSYdrPa03rtR1zdB"

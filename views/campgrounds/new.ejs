@@ -2,9 +2,20 @@
 <% layout('layouts/boilerplate') %>
 
 <div class="row">
+  <!-- Page Title -->
   <h1 class="text-center">New Campground</h1>
+
+  <!-- Form Container -->
   <div class="col-md-6 offset-md-3">
-    <form action="/campgrounds" method="POST" novalidate class="validated-form" enctype="multipart/form-data">
+    <!-- New Campground Form -->
+    <form
+      action="/campgrounds"
+      method="POST"
+      novalidate
+      class="validated-form"
+      enctype="multipart/form-data"
+    >
+      <!-- New Campground Title Input -->
       <div class="mb-3">
         <label clsss="form-label" for="title">Title</label>
         <input
@@ -12,11 +23,13 @@
           type="text"
           id="title"
           name="campground[title]"
-          required>
-        <div class="valid-feedback">
-          Looks good!
+          required
+        />
+        <div class="valid-feedback">Looks good!</div>
       </div>
-      </div>
+      <!-- End of New Campground Title Input -->
+
+      <!-- New Campground Location Input -->
       <div class="mb-3">
         <label class="form-label" for="location">Location</label>
         <input
@@ -24,25 +37,13 @@
           type="text"
           id="location"
           name="campground[location]"
-          required>
-        <div class="valid-feedback">
-          Looks good!
+          required
+        />
+        <div class="valid-feedback">Looks good!</div>
       </div>
-      </div>
-      
-      <!-- <div class="mb-3">
-        <label class="form-label" for="image">Image URL</label>
-        <input
-          class="form-control"
-          type="text"
-          id="location"
-          name="campground[image]"
-          required>
-        <div class="valid-feedback">
-          Looks good!
-        </div>
-      </div>  -->
-      
+      <!-- End of New Campground Location Input -->
+
+      <!-- New Campground Price Input -->
       <div class="mb-3">
         <label class="form-label" for="price">Campground Price</label>
         <div class="input-group">
@@ -55,30 +56,51 @@
             aria-describedby="price-label"
             id="price"
             name="campground[price]"
-            required/>
-            <div class="valid-feedback">
-              Looks good!
-          </div>
+            required
+          />
+          <div class="valid-feedback">Looks good!</div>
         </div>
-        <div class="mb-3">
-          <label class="form-label" for="description">Description</label>
-          <textarea class="form-control" type="text" id="description" name="campground[description]"
-              required></textarea>
-          <div class="valid-feedback">
-              Looks good!
-          </div>
-        </div>
+      </div>
+      <!-- End of New Campground Price Input -->
 
+      <!-- New Campground Description Input -->
+      <div class="mb-3">
+        <label class="form-label" for="description">Description</label>
+        <textarea
+          class="form-control"
+          type="text"
+          id="description"
+          name="campground[description]"
+          required
+        ></textarea>
+        <div class="valid-feedback">Looks good!</div>
+      </div>
+      <!-- End of New Campground Description Input -->
+
+      <!-- Upload New Campground Image Input -->
       <div class="mb-3">
         <label class="form-label" for="img">Upload Image</label>
-        <input type="file" class="form-control" name="image" id="image" multiple>
+        <input
+          type="file"
+          class="form-control"
+          name="image"
+          id="image"
+          multiple
+        />
         <div class="valid-feedback">Looks Good</div>
-   </div>
+      </div>
+      <!-- End of Upload New Campground Image Input -->
+
+      <!-- Add Campground Button -->
       <div class="mb-3">
         <button class="btn btn-success">Add Campground</button>
       </div>
+      <!-- End of Add Campground Button -->
     </form>
+    <!-- End of New Campground Form -->
+
+    <!-- Link back to all Campgrounds -->
     <a href="/campgrounds">All Campgrounds</a>
   </div>
+  <!-- End of Form Container -->
 </div>
-

@@ -1,8 +1,14 @@
 <!-- edit forms to edit camp title and location -->
+
 <% layout('layouts/boilerplate')%>
+
 <div class="row">
+  <!-- Page Title -->
   <h1 class="text-center">Edit Campground</h1>
+
+  <!-- End of Title -->
   <div class="col-md-6 offset-md-3">
+    <!-- Form -->
     <form
       action="/campgrounds/<%=campground._id%>?_method=PUT"
       method="POST"
@@ -10,6 +16,7 @@
       class="validated-form"
       enctype="multipart/form-data"
     >
+      <!-- Campground Title Edit Form-->
       <div class="mb-3">
         <label class="form-label" for="title">Title</label>
         <input
@@ -22,6 +29,9 @@
         />
         <div class="valid-feedback">Looks good!</div>
       </div>
+      <!-- End of Campground Title Edit Form-->
+
+      <!-- Campground Location Edit Form-->
       <div class="mb-3">
         <label class="form-label" for="location">Location</label>
         <input
@@ -34,7 +44,9 @@
         />
         <div class="valid-feedback">Looks good!</div>
       </div>
+      <!-- End of Campground Location Edit Form-->
 
+      <!-- Campground Location Price Form-->
       <div class="mb-3">
         <label class="form-label" for="price">Campground Price</label>
         <div class="input-group">
@@ -53,7 +65,9 @@
           <div class="valid-feedback">Looks good!</div>
         </div>
       </div>
+      <!-- End of Campground Location Price Form-->
 
+      <!-- Campground Location Description Form-->
       <div class="mb-3">
         <label class="form-label" for="description">Description</label>
         <textarea
@@ -67,7 +81,9 @@
         >
         <div class="valid-feedback">Looks good!</div>
       </div>
+      <!-- End of Campground Location Description Form-->
 
+      <!-- Add more Campground Image Form-->
       <div class="mb-3">
         <label class="form-label" for="img">Add more Images</label>
         <input
@@ -79,6 +95,8 @@
         />
         <div class="valid-feedback">Looks Good</div>
       </div>
+
+      <!-- Uploaded Image  -->
       <div class="mb-3">
         <% campground.images.forEach(function(img,i) { %>
         <img src="<%=img.thumbnail %>" class="img-thumbnail" alt="" />
@@ -93,10 +111,16 @@
         <label for="image-<%=i%>">Delete?</label>
         <% }) %>
       </div>
+      <!-- End of Uploaded Image -->
+
+      <!-- End of Add more Campground Image Form-->
       <div class="mb-3">
         <button class="btn btn-info">Update Campground</button>
       </div>
     </form>
+    <!-- End of form -->
+
+    <!-- Link back to all campgorunds -->
     <a href="/campgrounds/<%= campground._id%>">Back To Campground</a>
   </div>
 </div>
