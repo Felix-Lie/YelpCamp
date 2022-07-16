@@ -2,6 +2,7 @@ if (process.env.NODE_ENV !== 'production') {
   require('dotenv').config();
 }
 
+//packages
 const express = require('express');
 const path = require('path');
 const mongoose = require('mongoose');
@@ -13,16 +14,23 @@ const methodOverride = require('method-override');
 const passport = require('passport');
 const LocalStrategy = require('passport-local');
 const User = require('./models/user');
+
+//security packages
+const mongoSanitize = require('express-mongo-sanitize');
 const helmet = require('helmet');
 
-const mongoSanitize = require('express-mongo-sanitize');
-
+//routes
 const userRoutes = require('./routes/users');
 const campgroundRoutes = require('./routes/campgrounds');
 const reviewRoutes = require('./routes/reviews');
 
+const MongoDBStore = require('connect-mongo')(session);
+
+const dbUrl = 'mongodb://localhost:27017/yelp-camp';
+// 'mongodb://localhost:27017/yelp-camp'
+// const dbUrl = process.env.DB_URL;
 mongoose
-  .connect('mongodb://localhost:27017/yelp-camp', {
+  .connect(dbUrl, {
     useNewUrlParser: true,
     useUnifiedTopology: true,
   })
@@ -53,12 +61,25 @@ app.use(
   mongoSanitize({
     replaceWith: '_',
   })
-); //sanitizes user-supplied data to prevent MongoDB Operator Injection.
+);
+const secret = process.env.SECRET || 'thisshouldbeabettersecret!';
+//sanitizes user-supplied data to prevent MongoDB Operator Injection.
 
 //session
+const store = new MongoDBStore({
+  url: dbUrl,
+  secret,
+  touchAfter: 24 * 60 * 60,
+});
+
+store.on('error', function (e) {
+  console.log('SESSION STORE ERROR', e);
+});
+
 const sessionConfig = {
+  store,
   name: 'session',
-  secret: 'thisshouldbeabettersecret',
+  secret,
   resave: false,
   saveUninitialized: true,
   cookie: {
