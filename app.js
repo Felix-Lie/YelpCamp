@@ -76,7 +76,6 @@ const scriptSrcUrls = [
   'https://kit.fontawesome.com/',
   'https://cdnjs.cloudflare.com/',
   'https://cdn.jsdelivr.net/',
-  'https://res.cloudinary.com/dv5vm4sqh/',
 ];
 const styleSrcUrls = [
   'https://kit-free.fontawesome.com/',
@@ -86,18 +85,17 @@ const styleSrcUrls = [
   'https://fonts.googleapis.com/',
   'https://use.fontawesome.com/',
   'https://cdn.jsdelivr.net/',
-  'https://res.cloudinary.com/dv5vm4sqh/',
 ];
 const connectSrcUrls = [
   'https://*.tiles.mapbox.com',
   'https://api.mapbox.com',
   'https://events.mapbox.com',
-  'https://res.cloudinary.com/dv5vm4sqh/',
 ];
-const fontSrcUrls = ['https://res.cloudinary.com/dv5vm4sqh/'];
+const fontSrcUrls = [];
 
 app.use(session(sessionConfig));
 app.use(flash());
+
 //Helmet helps secure Express apps by setting various HTTP headers.
 app.use(
   helmet.contentSecurityPolicy({
@@ -116,8 +114,6 @@ app.use(
         'https://images.unsplash.com/',
       ],
       fontSrc: ["'self'", ...fontSrcUrls],
-      mediaSrc: ['https://res.cloudinary.com/dv5vm4sqh/'],
-      childSrc: ['blob:'],
     },
   })
 );
@@ -131,17 +127,10 @@ passport.deserializeUser(User.deserializeUser());
 
 //flash
 app.use((req, res, next) => {
-  console.log(req.session);
   res.locals.currentUser = req.user;
   res.locals.success = req.flash('success');
   res.locals.error = req.flash('error');
   next();
-});
-
-app.get('/fakeUser', async (req, res) => {
-  const user = new User({ email: 'colttttt@gmail.com', username: 'colttt1' });
-  const newUser = await User.register(user, 'chicken');
-  res.send(newUser);
 });
 
 //routes
