@@ -90,6 +90,10 @@ const sessionConfig = {
   },
 };
 
+app.use(session(sessionConfig));
+app.use(flash());
+app.use(helmet());
+
 const scriptSrcUrls = [
   'https://stackpath.bootstrapcdn.com/',
   'https://api.tiles.mapbox.com/',
@@ -113,9 +117,6 @@ const connectSrcUrls = [
   'https://events.mapbox.com',
 ];
 const fontSrcUrls = [];
-
-app.use(session(sessionConfig));
-app.use(flash());
 
 //Helmet helps secure Express apps by setting various HTTP headers.
 app.use(

@@ -21,9 +21,10 @@
     <!-- Campground Image -->
     <div class="col-md-4">
         <% if(campground.images.length) {%>
-          <img class="img-fluid" alt="" src="<%=campground.images[0].url%>" />
+          <img class="img-fluid" alt="" src="<%=campground.images[0].url%>" crossorigin>
         <% } else { %>
-          <img  class="img-fluid" src="https://res.cloudinary.com/felixlie/image/upload/v1648594735/YelpCamp/iihrvbuvrqwod7f7vtwo.jpg" alt="">
+          <img  class="img-fluid" src="https://res.cloudinary.com/felixlie/image/upload/v1648594735/YelpCamp/iihrvbuvrqwod7f7vtwo.jpg" alt=""
+          crossorigin>
         <% } %>
     </div>
     <!-- End of Campground Image -->
